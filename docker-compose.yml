@@ -1,0 +1,66 @@
+version: '3'
+services:
+  nginx-unit:
+    image : unit:1.31.1-minimal
+    container_name: nginx-unit
+    ports:
+      - "8000:8000"
+
+  tomcat1:
+    image: tomcat:10
+    container_name: tomcat1
+    ports:
+      - "8080:8080"
+
+  tomcat2:
+    image: tomcat:10
+    container_name: tomcat2
+    ports:
+      - "8081:8080"
+
+  logstash:
+    build:
+      context: ./logstash
+    container_name: logstash
+    network_mode: host
+    depends_on:
+      - elasticsearch
+
+  kibana:
+    build:
+      context: ./kibana
+    container_name: kibana
+    ports:
+      - "9000:5601"
+    network_mode: host
+    depends_on:
+      - elasticsearch
+
+  mariadb:
+    build:
+      context: ./mariadb
+    container_name: mariadb
+    ports:
+      - "3306:3306"
+    environment:
+      - MARIADB_ROOT_PASSWORD=password
+
+  elasticsearch:
+    build:
+      context: ./elasticsearch
+    container_name: elasticsearch
+    network_mode: host
+    ports:
+      - "9200:9200"
+    mem_limit: 1g
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=true
+      - ELASTIC_PASSWORD=elastic
+      - xpack.security.transport.ssl.enabled=false
+      - xpack.security.http.ssl.enabled=false
+
+
+#networks:
+#  elastic:
+#    driver: host

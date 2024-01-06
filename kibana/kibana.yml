@@ -1,0 +1,19 @@
+server.name: kibana
+server.host: "0.0.0.0" # Permet d'écouter sur toutes les interfaces
+
+
+monitoring.ui.container.elasticsearch.enabled: true
+monitoring.ui.container.logstash.enabled: true
+
+## X-Pack security credentials
+#
+elasticsearch.username: "elastic"
+elasticsearch.password: "kibana"
+
+
+
+elasticsearch.hosts: ["http://localhost:9200"] # Remplacez par l'adresse correcte d'Elasticsearch
+xpack.reporting.kibanaServer.hostname: localhost # Ajout de la configuration recommandée pour Reporting
+
+xpack.license_management.ui.enabled: false # Désactiver la gestion de licence pour éviter les erreurs liées à la récupération des licences
+xpack.encryptedSavedObjects.encryptionKey: "179fdd27f87ba1079433e8433ecc93f79e862b73efd4d2a19ee2ddf544460d1e"
